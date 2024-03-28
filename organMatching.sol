@@ -80,7 +80,7 @@ contract medicalrecord {
         BloodType _bloodType, 
         address _recipient,
         address _donor
-        ) public returns(uint){
+        ) external returns(uint){
         
             organs[_organ].rid++;
             uint _id = organs[_organ].rid;
@@ -110,7 +110,7 @@ contract medicalrecord {
         address _donor,
         address _recipient 
         
-        ) public returns(uint){
+        ) external returns(uint){
             organs[_organ].did++;
             uint _id = organs[_organ].did;
             organs[_organ].donaSpecs[_id].status = true;
@@ -128,11 +128,11 @@ contract medicalrecord {
         return(_id);
     }
     
-    function turnFalse(uint _id, string memory _organ) public {
+    function turnFalse(uint _id, string memory _organ) external {
         organs[_organ].reqSpecs[_id].status = false;
     }
 
-    function matchingListDonor(uint _ids, string memory _organ) public returns(uint) { //Donor trying to find a suitable recipient.      
+    function matchingListDonor(uint _ids, string memory _organ) external returns(uint) { //Donor trying to find a suitable recipient.      
         require(organs[_organ].donaSpecs[_ids].status == true, "the entered ID is not available");
         uint score;
         uint matchID = matchIDMain;
@@ -181,7 +181,7 @@ contract medicalrecord {
         
     }
 
-    function matchingListReci(uint _ids, string memory _organ)public returns(uint){// Recipient trying to find a suitabel donor.
+    function matchingListReci(uint _ids, string memory _organ)external returns(uint){// Recipient trying to find a suitabel donor.
         require(organs[_organ].reqSpecs[_ids].status == true, "the entered ID is not available");
 
         uint score;
@@ -254,19 +254,19 @@ contract medicalrecord {
         }
     }
 
-    function checkListAll1 (uint _matchID) public view returns(uint [] memory){
+    function checkListAll1 (uint _matchID) external view returns(uint [] memory){
         return(numLists[_matchID].nums);
     }
     
-    function checkIDList(uint _matchID) public view returns(uint [] memory){
+    function checkIDList(uint _matchID) external view returns(uint [] memory){
         return (numLists[_matchID].userID);
     }
 
-    function viewDonor(uint _id, string memory _organ) public view returns(donaSpec memory){
+    function viewDonor(uint _id, string memory _organ) external view returns(donaSpec memory){
         return(organs[_organ].donaSpecs[_id]);
     }
 
-    function viewRecipient(uint _id, string memory _organ) public view returns(reqSpec memory){
+    function viewRecipient(uint _id, string memory _organ) external view returns(reqSpec memory){
         return(organs[_organ].reqSpecs[_id]);
     }
 
@@ -291,7 +291,7 @@ contract medicalrecord {
         return(a);
     }
 
-    function donorAcceptance(uint _matchID, bool _response)public {
+    function donorAcceptance(uint _matchID, bool _response)external {
         // uint recipientID = numLists[_matchID].userID[0];
         require(organs[numLists[_matchID].organ].donaSpecs[numLists[_matchID].mainID].status == true, "This donor is not available");
         require(organs[numLists[_matchID].organ].donaSpecs[numLists[_matchID].mainID].donor == msg.sender, "You are not the owner of the account");
@@ -306,7 +306,7 @@ contract medicalrecord {
                 
     }
 
-    function recipientAcceptance(uint _matchID, bool _response)public{
+    function recipientAcceptance(uint _matchID, bool _response)external {
         
         if (_response == true && numLists[_matchID].raccept == false && numLists[_matchID].rreject == false){
             numLists[_matchID].raccept = true;
@@ -332,7 +332,7 @@ contract medicalrecord {
         
     }
 
-    function removeFirstCandidate (uint _matchID) public {
+    function removeFirstCandidate (uint _matchID) external {
         require(numLists[_matchID].raccept == false, "The recipient has accepted");
         // if(numLists[_matchID].timee  + 60 <= block.timestamp){
             delete numLists[_matchID].nums[0];
@@ -346,19 +346,19 @@ contract medicalrecord {
         return(numLists[_matchID].organ, numLists[_matchID].donation, numLists[_matchID].mainID, numLists[_matchID].userID[0]);
     }
 
-    function updateTrack(string memory _organ, uint _id, string memory _update)public{
+    function updateTrack(string memory _organ, uint _id, string memory _update)external {
         organs[_organ].donaSpecs[_id].track.push(_update);
     }
 
-    function viewTrack(string memory _organ, uint _id) public view returns(string [] memory){
+    function viewTrack(string memory _organ, uint _id) external view returns(string [] memory){
         return organs[_organ].donaSpecs[_id].track;
     }
 
-    function viewStore(uint _matchID)public view returns(numList memory){
+    function viewStore(uint _matchID)external view returns(numList memory){
         return (numLists[_matchID]);
     }
 
-    function checkAcceptance (uint _matchID)public view returns(bool, bool, bool, bool){
+    function checkAcceptance (uint _matchID)external view returns(bool, bool, bool, bool){
         return(numLists[_matchID].daccept, numLists[_matchID].dreject, numLists[_matchID].raccept, numLists[_matchID].rreject);
     }
 
