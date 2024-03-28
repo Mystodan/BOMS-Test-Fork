@@ -64,7 +64,7 @@ contract medicalrecord {
         bool daccept;
         bool dreject;
         bool sorted;
-        uint timee;
+        // uint timee;
         bool donation;
     }
 
@@ -175,7 +175,7 @@ contract medicalrecord {
             }
         }
         numLists[matchID].donation = true;
-        numLists[matchID].timee = block.timestamp;
+        // numLists[matchID].timee = block.timestamp;
         decendingSort(matchID);
         return (matchID);
         
@@ -209,7 +209,7 @@ contract medicalrecord {
 
             }
         }
-        numLists[matchID].timee = block.timestamp;
+        // numLists[matchID].timee = block.timestamp;
         decendingSort(matchID);
         return (matchID);
     }
@@ -334,12 +334,12 @@ contract medicalrecord {
 
     function removeFirstCandidate (uint _matchID) public {
         require(numLists[_matchID].raccept == false, "The recipient has accepted");
-        if(numLists[_matchID].timee  + 60 <= block.timestamp){
+        // if(numLists[_matchID].timee  + 60 <= block.timestamp){
             delete numLists[_matchID].nums[0];
             delete numLists[_matchID].userID[0];
             decendingSort(_matchID);
-            numLists[_matchID].timee = block.timestamp;
-        }
+            // numLists[_matchID].timee = block.timestamp;
+        // }
     }
 
     function bestMatch(uint _matchID) public view returns(string memory, bool, uint, uint){
