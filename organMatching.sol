@@ -14,7 +14,6 @@ contract medicalrecord {
     struct reqSpec {
         bool status;
         address recipient;
-        bytes32 hash;
         BloodType bloodType;
         uint organSize;
         uint height;
@@ -30,7 +29,6 @@ contract medicalrecord {
     struct donaSpec {
         bool status;
         address donor;
-        bytes32 hash;
         BloodType bloodType;
         uint organSize;
         uint height;
@@ -88,7 +86,6 @@ contract medicalrecord {
             uint _id = organs[_organ].rid;
             organs[_organ].reqSpecs[_id].status = true;
             organs[_organ].reqSpecs[_id].recipient = _recipient;
-            organs[_organ].reqSpecs[_id].hash = sha256(abi.encodePacked(_recipient));
             organs[_organ].reqSpecs[_id].organSize = _organSize;
             organs[_organ].reqSpecs[_id].height = _height;
             organs[_organ].reqSpecs[_id].weight = _weight;
@@ -118,7 +115,6 @@ contract medicalrecord {
             uint _id = organs[_organ].did;
             organs[_organ].donaSpecs[_id].status = true;
             organs[_organ].donaSpecs[_id].donor = _donor;
-            organs[_organ].donaSpecs[_id].hash = sha256(abi.encodePacked(msg.sender));
             organs[_organ].donaSpecs[_id].organSize = _organSize;
             organs[_organ].donaSpecs[_id].height = _height;
             organs[_organ].donaSpecs[_id].weight = _weight;
