@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: GPL-3.0
+
 pragma solidity >=0.8.10;
 pragma abicoder v2;
 
@@ -67,7 +69,7 @@ contract medicalrecord {
     }
 
     mapping (uint => numList) numLists;
-
+/// @notice This function will register a recipient
     function hospitalReqReg(
         string memory _organ, 
         uint _organSize, 
