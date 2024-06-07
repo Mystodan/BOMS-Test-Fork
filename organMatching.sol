@@ -7,12 +7,12 @@ pragma abicoder v2;
 
 contract medicalrecord {
 
-    address owner = msg.sender;
-    address public blankAddress = 0x0000000000000000000000000000000000000000;    
+    address immutable owner = msg.sender;
+    address public constant blankAddress = 0x0000000000000000000000000000000000000000;    
     uint matchIDMain;    
-    uint initialScore= 30;
-    uint patnerScore = 20;
-    uint difScore = 1e6;
+    uint constant initialScore= 30;
+    uint constant patnerScore = 20;
+    uint constant difScore = 1e6;
 
     struct reqSpec {
         bool status;
