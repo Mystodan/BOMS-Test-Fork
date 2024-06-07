@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: GPL-3.0
 
-pragma solidity >=0.8.10;
+pragma solidity = 0.8.10;
 pragma abicoder v2;
 
 // pragma experimental ABIEncoderV2;
@@ -10,6 +10,9 @@ contract medicalrecord {
     address owner = msg.sender;
     address public blankAddress;    
     uint matchIDMain;    
+    uint initialScore= 30;
+    uint patnerScore = 20;
+    uint difScore = 1e6;
 
     struct reqSpec {
         bool status;
@@ -142,33 +145,33 @@ contract medicalrecord {
 
         for(uint i = 1; i <= organs[_organ].rid; i++){
             
-            score = 30;
+            score = initialScore;
             uint _id = i;
             if(organs[_organ].reqSpecs[_id].status == true && (organs[_organ].donaSpecs[_ids].bloodType == organs[_organ].reqSpecs[_id].bloodType || compareBlood(organs[_organ].donaSpecs[_ids].bloodType, organs[_organ].reqSpecs[_id].bloodType) == true)){
                 uint a;
                 if(organs[_organ].donaSpecs[_ids].alive == false){
                     if(organs[_organ].reqSpecs[_id].hospital == organs[_organ].donaSpecs[_ids].hospital){score++;}
                     a = findDonorID(organs[_organ].reqSpecs[_id].donor, _organ);
-                    if(organs[_organ].reqSpecs[_id].donor == organs[_organ].donaSpecs[a].donor && organs[_organ].donaSpecs[a].recipient != blankAddress){score = score + 20;} //checking if recipient came with a donor
+                    if(organs[_organ].reqSpecs[_id].donor == organs[_organ].donaSpecs[a].donor && organs[_organ].donaSpecs[a].recipient != blankAddress){score = score + patnerScore;} //checking if recipient came with a donor
                     if(organs[_organ].reqSpecs[_id].organSize == organs[_organ].donaSpecs[_ids].organSize){score++;}
                     if(organs[_organ].reqSpecs[_id].height == organs[_organ].donaSpecs[_ids].height){score++;}
                     if(organs[_organ].reqSpecs[_id].weight == organs[_organ].donaSpecs[_ids].weight){score++;}
                     if(organs[_organ].reqSpecs[_id].age == organs[_organ].donaSpecs[_ids].age){score++;}
                     score = score + organs[_organ].reqSpecs[_id].condition;
-                    score = score*1000000;
-                    score = score + 1000000 - _id;
+                    score = score*difScore;
+                    score = score + difScore - _id;
                     numLists[matchID].nums.push(score);
                     numLists[matchID].userID.push(_id);
                 }else {
                     a = findDonorID(organs[_organ].reqSpecs[_id].donor, _organ);
-                    if(organs[_organ].reqSpecs[_id].donor == organs[_organ].donaSpecs[a].donor && organs[_organ].donaSpecs[a].recipient != blankAddress){score = score + 20;} //checking if recipient came with a donor
+                    if(organs[_organ].reqSpecs[_id].donor == organs[_organ].donaSpecs[a].donor && organs[_organ].donaSpecs[a].recipient != blankAddress){score = score + patnerScore;} //checking if recipient came with a donor
                     if(organs[_organ].reqSpecs[_id].organSize == organs[_organ].donaSpecs[_ids].organSize){score++;}
                     if(organs[_organ].reqSpecs[_id].height == organs[_organ].donaSpecs[_ids].height){score++;}
                     if(organs[_organ].reqSpecs[_id].weight == organs[_organ].donaSpecs[_ids].weight){score++;}
                     if(organs[_organ].reqSpecs[_id].age == organs[_organ].donaSpecs[_ids].age){score++;}
                     score = score + organs[_organ].reqSpecs[_id].condition;
-                    score = score*1000000;
-                    score = score + 1000000 - _id;
+                    score = score*difScore;
+                    score = score + difScore - _id;
                     numLists[matchID].nums.push(score);
                     numLists[matchID].userID.push(_id);
                 }
@@ -192,17 +195,17 @@ contract medicalrecord {
 
 
         for(uint i = 1; i <= organs[_organ].did; i++){
-            score = 30;
+            score = initialScore;            
             uint _id = i;
             if(organs[_organ].donaSpecs[_id].status == true && (organs[_organ].donaSpecs[_id].bloodType == organs[_organ].reqSpecs[_ids].bloodType || compareBlood(organs[_organ].donaSpecs[_id].bloodType, organs[_organ].reqSpecs[_ids].bloodType) == true)){
                 uint a = findRecipientID(organs[_organ].donaSpecs[_id].recipient, _organ);
-                if(organs[_organ].donaSpecs[_id].donor == organs[_organ].reqSpecs[a].donor && organs[_organ].donaSpecs[_id].recipient != blankAddress){score = score + 20;}
+                if(organs[_organ].donaSpecs[_id].donor == organs[_organ].reqSpecs[a].donor && organs[_organ].donaSpecs[_id].recipient != blankAddress){score = score + patnerScore;}
                 if(organs[_organ].donaSpecs[_id].organSize == organs[_organ].reqSpecs[_ids].organSize){score++;}
                 if(organs[_organ].donaSpecs[_id].height == organs[_organ].reqSpecs[_ids].height){score++;}
                 if(organs[_organ].donaSpecs[_id].weight == organs[_organ].reqSpecs[_ids].weight){score++;}
                 if(organs[_organ].donaSpecs[_id].age == organs[_organ].reqSpecs[_ids].age){score++;}
-                score = score*1000000;
-                score = score + 1000000 - _id;
+                score = score*difScore;
+                score = score + difScore - _id;
                 numLists[matchID].nums.push(score);
                 numLists[matchID].userID.push(_id);
                 score++;
@@ -342,7 +345,7 @@ contract medicalrecord {
         // }
     }
 
-    function bestMatch(uint _matchID) public view returns(string memory, bool, uint, uint){
+    function bestMatch(uint _matchID) external view returns(string memory, bool, uint, uint){
         return(numLists[_matchID].organ, numLists[_matchID].donation, numLists[_matchID].mainID, numLists[_matchID].userID[0]);
     }
 
