@@ -8,7 +8,7 @@ pragma abicoder v2;
 contract medicalrecord {
 
     address owner = msg.sender;
-    address public blankAddress;    
+    address public blankAddress = 0x0000000000000000000000000000000000000000;    
     uint matchIDMain;    
     uint initialScore= 30;
     uint patnerScore = 20;
@@ -148,7 +148,7 @@ contract medicalrecord {
             score = initialScore;
             uint _id = i;
             if(organs[_organ].reqSpecs[_id].status == true && (organs[_organ].donaSpecs[_ids].bloodType == organs[_organ].reqSpecs[_id].bloodType || compareBlood(organs[_organ].donaSpecs[_ids].bloodType, organs[_organ].reqSpecs[_id].bloodType) == true)){
-                uint a;
+                uint a = 0;
                 if(organs[_organ].donaSpecs[_ids].alive == false){
                     if(organs[_organ].reqSpecs[_id].hospital == organs[_organ].donaSpecs[_ids].hospital){score++;}
                     a = findDonorID(organs[_organ].reqSpecs[_id].donor, _organ);
@@ -219,7 +219,7 @@ contract medicalrecord {
 
     function compareBlood (BloodType _bloodTypeDonor, BloodType _bloodTypeReci) private pure returns(bool){
 
-        bool aaa;
+        bool aaa = false;
         if((_bloodTypeReci == BloodType.A || _bloodTypeReci == BloodType.AB) && _bloodTypeDonor == BloodType.A){
             aaa = true;
         }else if ((_bloodTypeReci == BloodType.B || _bloodTypeReci == BloodType.AB) && _bloodTypeDonor == BloodType.B ){
@@ -274,7 +274,7 @@ contract medicalrecord {
     }
 
     function findDonorID(address _donorAddress, string memory _organ) public view returns(uint){
-        uint a;
+        uint a = 0;
         for (uint i = 1; i <= organs[_organ].did; i++){
             if(organs[_organ].donaSpecs[i].donor == _donorAddress){
                 a = i;
@@ -285,7 +285,7 @@ contract medicalrecord {
     }
 
     function findRecipientID(address _recipientAddress, string memory _organ) public view returns(uint){
-        uint a;
+        uint a = 0;
         for (uint i = 1; i <= organs[_organ].rid; i++){
             if(organs[_organ].reqSpecs[i].recipient == _recipientAddress){
                 a = i;
