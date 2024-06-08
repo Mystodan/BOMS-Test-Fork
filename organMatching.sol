@@ -8,7 +8,7 @@ pragma abicoder v2;
 contract medicalrecord {
 
     address immutable owner = msg.sender;
-    address public constant blankAddress = 0x0000000000000000000000000000000000000000;    
+    address constant blankAddress = 0x0000000000000000000000000000000000000000;    
     uint matchIDMain;    
     uint constant initialScore= 30;
     uint constant patnerScore = 20;
@@ -130,11 +130,7 @@ contract medicalrecord {
 
         return(_id);
     }
-    
-    function turnFalse(uint _id, string memory _organ) external {
-        organs[_organ].reqSpecs[_id].status = false;
-    }
-
+  
     function matchingListDonor(uint _ids, string memory _organ) external returns(uint) { //Donor trying to find a suitable recipient.      
         require(organs[_organ].donaSpecs[_ids].status == true, "the entered ID is not available");
         uint score;
@@ -232,7 +228,7 @@ contract medicalrecord {
         return (aaa);
     }
     
-    function decendingSort(uint _matchID) public {
+    function decendingSort(uint _matchID) private {
             numLists[_matchID].nums.push(0);
             numLists[_matchID].userID.push(0);
             numLists[_matchID].sorted = true;
@@ -255,14 +251,6 @@ contract medicalrecord {
                 numLists[_matchID].userID[i + 1] = currentID;
             }
         }
-    }
-
-    function checkListAll1 (uint _matchID) external view returns(uint [] memory){
-        return(numLists[_matchID].nums);
-    }
-    
-    function checkIDList(uint _matchID) external view returns(uint [] memory){
-        return (numLists[_matchID].userID);
     }
 
     function viewDonor(uint _id, string memory _organ) external view returns(donaSpec memory){
@@ -323,7 +311,7 @@ contract medicalrecord {
 
     }
 
-    function deactivate (uint _matchID) public {
+    function deactivate (uint _matchID) private {
         uint recipientID = numLists[_matchID].userID[0];
         string memory _organ = numLists[_matchID].organ;
         uint _id = numLists[_matchID].mainID;
@@ -355,10 +343,6 @@ contract medicalrecord {
 
     function viewTrack(string memory _organ, uint _id) external view returns(string [] memory){
         return organs[_organ].donaSpecs[_id].track;
-    }
-
-    function viewStore(uint _matchID)external view returns(numList memory){
-        return (numLists[_matchID]);
     }
 
     function checkAcceptance (uint _matchID)external view returns(bool, bool, bool, bool){
