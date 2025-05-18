@@ -1,13 +1,26 @@
-To test this smart contract, on an Ethereum environment like remix.ethereum.org.
+# Instruksjoner for testing av smartkontrakten i Ethereum (f.eks. remix.ethereum.org)
 
-Register the recipients before the donors by using the hospitalReqReg and hospitalDonaReg functions respectively. 
+1. **Registrer mottakere:**
+   - Kjør funksjonen `hospitalReqReg` for å registrere mottakere først.
 
-Use the number returned after the donor's registration and the organ name to execute the matching function by using the matchingListDonor funtion.
+2. **Registrer donorer:**
+   - Kjør funksjonen `hospitalDonaReg` for å registrere donorer etter mottakere.
 
-The matching function will return a matching ID number.
+3. **Start matching:**
+   - Bruk donorens registreringsnummer og organets navn i funksjonen `matchingListDonor` for å initiere matching.
 
-Using the matching ID number the bestMatch function will reveal the donor ID number and the highest priority recipient ID number.
+4. **Hent matchings-ID:**
+   - Matching-funksjonen returnerer et matchings-ID.
 
-The donor and the recipient are expected to accept the match result by using donorAccept and recipientAccept respectively, after the cross-matching and any possible consern has been addressed.
+5. **Finn beste match:**
+   - Bruk `bestMatch` med matchings-ID for å få donor-ID og mottaker-ID med høyest prioritet.
 
-The blockchain system track any changes in the system activity.
+6. **Godkjenn match:**
+   - Donor bekrefter matchen med `donorAccept`.
+   - Mottaker bekrefter matchen med `recipientAccept`.
+
+7. **Kryssmatching og avklaringer:**
+   - Bekreftelser skjer etter at kryssmatching er gjennomført og eventuelle bekymringer er håndtert.
+
+8. **Sporing:**
+   - Systemet sporer alle endringer og hendelser i blokkjeden gjennom hele prosessen.
